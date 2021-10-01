@@ -19,39 +19,24 @@ export class CategoryComponent implements OnInit {
     this.getCategories();
   }
 
-  // defini se um category será criado ou atualizado
   saveCategory(form: NgForm) {
-    if (this.category.id !== undefined) {
-      this.categoryService.updateCategory(this.category).subscribe(() => {
-        this.cleanForm(form);
-      });
-    } else {
-      this.categoryService.saveCategory(this.category).subscribe(() => {
-        this.cleanForm(form);
-      });
-    }
+    this.categoryService.saveCategory(this.category).subscribe(() => {
+      this.cleanForm(form);
+    });
   }
 
-  // Chama o serviço para obtém todos os categories
   getCategories() {
     this.categoryService.getCategories().subscribe((categories: Category[]) => {
       this.categories = categories;
     });
   }
 
-  // deleta um category
   deleteCategory(category: Category) {
     this.categoryService.deleteCategory(category).subscribe(() => {
       this.getCategories();
     });
   }
 
-  // copia o category para ser editado.
-  editCategory(category: Category) {
-    this.category = { ...category };
-  }
-
-  // limpa o formulario
   cleanForm(form: NgForm) {
     this.getCategories();
     form.resetForm();

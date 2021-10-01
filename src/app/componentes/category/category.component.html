@@ -5,19 +5,18 @@
       <table class="table">
           <thead>
             <tr>
+              <th scope="col">Actions</th>
               <th scope="col">Id</th>
               <th scope="col">Name</th>
-              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let category of categories">
-              <td>{{category.id}}</td>
-              <td>{{category.name}}</td>
               <td>
-                <button type="button" class="btn btn-warning btn-sm" (click)="editCategory(category)">Edit</button>
                 <button type="button" class="btn btn-danger btn-sm ml-1" (click)="deleteCategory(category)">Delete</button>
               </td>
+              <td>{{category.id}}</td>
+              <td>{{category.name}}</td>
             </tr>
           </tbody>
         </table>

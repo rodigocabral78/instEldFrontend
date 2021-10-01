@@ -2,15 +2,15 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { Category } from '../models/category';
+import { Device } from '../models/device';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
+export class DeviceService {
 
-  url = environment.baseUrl + '/categories';
+  url = environment.baseUrl + '/devices';
   environment: any;
 
   constructor(private httpClient: HttpClient) { }
@@ -19,31 +19,33 @@ export class CategoryService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
 
-  getCategories(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(this.url)
+  getDevices(): Observable<Device[]> {
+    return this.httpClient.get<Device[]>(this.url)
       .pipe(
         retry(2),
         catchError(this.handleError))
   }
 
-  getCategoryById(id: number): Observable<Category> {
-    return this.httpClient.get<Category>(this.url + '/' + id)
+  getDeviceById(id: number): Observable<Device> {
+    return this.httpClient.get<Device>(this.url + '/' + id)
       .pipe(
         retry(2),
         catchError(this.handleError)
       )
   }
 
-  saveCategory(category: Category): Observable<Category> {
-    return this.httpClient.post<Category>(this.url, JSON.stringify(category), this.httpOptions)
+  saveDevice(device: Device): Observable<Device> {
+    // device.partNumber = Number(device.partNumber)
+    console.log(device)
+    return this.httpClient.post<Device>(this.url, JSON.stringify(device), this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError)
       )
   }
 
-  deleteCategory(category: Category) {
-    return this.httpClient.delete<Category>(this.url + '/' + category.id, this.httpOptions)
+  deleteDevice(device: Device) {
+    return this.httpClient.delete<Device>(this.url + '/' + device.id, this.httpOptions)
       .pipe(
         retry(1),
         catchError(this.handleError)

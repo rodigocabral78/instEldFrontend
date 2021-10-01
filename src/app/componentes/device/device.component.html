@@ -1,48 +1,76 @@
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item active" aria-current="page">Gerenciamento de dispositivos</li>
-  </ol>
-</nav>
 <div class="container">
-  <div class="card list-category">
-    <h5 class="card-header">Lista de dispositivos</h5>
+  <div class="card list-device">
+    <h5 class="card-header">Device list</h5>
     <div class="card-body">
       <table class="table">
           <thead>
             <tr>
+              <th scope="col">Actions</th>
               <th scope="col">Id</th>
-              <th scope="col">Nome</th>
-              <th scope="col">Ações</th>
+              <th scope="col">Color</th>
+              <th scope="col">Part Number</th>
+              <th scope="col">Category Id</th>
+              <th scope="col">Name</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let category of categories">
-              <td>{{category.id}}</td>
-              <td>{{category.name}}</td>
+            <tr *ngFor="let device of devices">
               <td>
-                <button type="button" class="btn btn-warning btn-sm" (click)="editCategory(category)">Editar</button>
-                <button type="button" class="btn btn-danger btn-sm ml-1" (click)="deleteCategory(category)">Deletar</button>
+                <button type="button" class="btn btn-danger btn-sm ml-1" (click)="deleteDevice(device)">Delete</button>
               </td>
+              <td>{{device.id}}</td>
+              <td>{{device.color}}</td>
+              <td>{{device.partNumber}}</td>
+              <td>{{device.category_id}}</td>
+              <td>{{device.name}}</td>
             </tr>
           </tbody>
         </table>
     </div>
   </div>
 
-  <div class="card add-category">
-      <h5 class="card-header">Adicionar/Atualizar categoria</h5>
-      <div class="card-body">
-          <form id="add-form" (ngSubmit)="f.form.valid && saveCategory(f)" #f="ngForm" novalidate>
-            <div class="form-group">
-                <label for="name">Nome</label>
-                <input type="text" [(ngModel)]="category.name" id="name" name="name" #name="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" placeholder="Digite a nome">
-                <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
-                    <div *ngIf="name.errors.required">Nome é obrigatória</div>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary btn-add-category">Salvar</button>
-            <button type="reset" class="btn btn-secondary btn-add-category" (click)="cleanForm(f)">Cancelar</button>
-          </form>
-      </div>
+  <div class="card add-device">
+    <h5 class="card-header">Add/Update Device</h5>
+    <div class="card-body">
+      <form id="add-form" (ngSubmit)="f.form.valid && saveDevice(f)" #f="ngForm" novalidate>
+        <div class="form-group">
+          <label for="category_id">Category</label>
+
+          <select [(ngModel)]="device.category_id" id="category_id" name="category_id" #name="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted && (category_id.invalid) }" placeholder="Select a Category">
+            <option *ngFor="let category of categories" [ngValue]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+
+          <div *ngIf="f.submitted && (category_id.invalid)" class="invalid-feedback">
+              <div *ngIf="category_id.errors?.required">Category is required.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="color">Color</label>
+          <input type="text" [(ngModel)]="device.color" id="color" name="color" #name="ngModel" required maxlength="16" pattern="[a-zA-Z ]*" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && (color.invalid) }" placeholder="Enter a Color">
+
+          <div *ngIf="f.submitted && (color.invalid)" class="invalid-feedback">
+              <div *ngIf="color.errors.required">Color is required.</div>
+              <div *ngIf="color.errors.maxlength">The color must have a maximum of 16 characters.</div>
+              <div *ngIf="color.errors.pattern">Color contains only letters and/or spaces.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="partNumber">Part Number</label>
+          <input type="number" [(ngModel)]="device.partNumber" id="partNumber" name="partNumber" #name="ngModel" required min="1" max="10" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && (partNumber.invalid) }" placeholder="Enter a Part Number">
+
+          <div *ngIf="f.submitted && (partNumber.invalid)" class="invalid-feedback">
+              <div *ngIf="partNumber.errors.required">Part Number is required.</div>
+              <div *ngIf="partNumber.errors.min">The part number must be at least 1 character.</div>
+              <div *ngIf="partNumber.errors.max">The part number must have a maximum of 10 characters.</div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-add-device">Save</button>
+        <button type="reset" class="btn btn-secondary btn-add-device" (click)="cleanForm(f)">Cancel</button>
+      </form>
     </div>
+  </div>
 </div>
