@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="card list-category">
+    <h5 class="card-header">Category list</h5>
+    <div class="card-body">
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of categories">
+              <td>{{category.id}}</td>
+              <td>{{category.name}}</td>
+              <td>
+                <button type="button" class="btn btn-warning btn-sm" (click)="editCategory(category)">Edit</button>
+                <button type="button" class="btn btn-danger btn-sm ml-1" (click)="deleteCategory(category)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+  <div class="card add-category">
+    <h5 class="card-header">Add/Update Category</h5>
+    <div class="card-body">
+      <form id="add-form" (ngSubmit)="f.form.valid && saveCategory(f)" #f="ngForm" novalidate>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" [(ngModel)]="category.name" id="name" name="name" #name="ngModel" required maxlength="128" class="form-control" [ngClass]="{ 'is-invalid': f.submitted && (name.invalid || name.dirty || name.touched) }" placeholder="Enter a Name">
+
+          <div *ngIf="f.submitted && (name.invalid || name.dirty || name.touched)" class="alert">
+              <div *ngIf="name.errors?.required">Name is required.</div>
+              <div *ngIf="name.errors?.maxlength">The name must have a maximum of 128 characters.</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-add-category">Save</button>
+        <button type="reset" class="btn btn-secondary btn-add-category" (click)="cleanForm(f)">Cancel</button>
+      </form>
+    </div>
+  </div>
+</div>

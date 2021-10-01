@@ -1,0 +1,48 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Gerenciamento de dispositivos</li>
+  </ol>
+</nav>
+<div class="container">
+  <div class="card list-category">
+    <h5 class="card-header">Lista de dispositivos</h5>
+    <div class="card-body">
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of categories">
+              <td>{{category.id}}</td>
+              <td>{{category.name}}</td>
+              <td>
+                <button type="button" class="btn btn-warning btn-sm" (click)="editCategory(category)">Editar</button>
+                <button type="button" class="btn btn-danger btn-sm ml-1" (click)="deleteCategory(category)">Deletar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+  <div class="card add-category">
+      <h5 class="card-header">Adicionar/Atualizar categoria</h5>
+      <div class="card-body">
+          <form id="add-form" (ngSubmit)="f.form.valid && saveCategory(f)" #f="ngForm" novalidate>
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" [(ngModel)]="category.name" id="name" name="name" #name="ngModel" required class="form-control" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" placeholder="Digite a nome">
+                <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+                    <div *ngIf="name.errors.required">Nome é obrigatória</div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-add-category">Salvar</button>
+            <button type="reset" class="btn btn-secondary btn-add-category" (click)="cleanForm(f)">Cancelar</button>
+          </form>
+      </div>
+    </div>
+</div>
